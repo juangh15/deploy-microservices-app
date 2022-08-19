@@ -1,0 +1,58 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# PORTS ----------------
+# auth api = 8000
+# frontend = 8080
+# log message = 6379
+# todos api = 8082
+# users api = 8083
+
+# Every VM use CentOS 8
+
+Vagrant.configure("2") do |config|
+
+  # General provisioning 
+  config.vm.provision :shell, path: "scripts/provision-general.sh"
+
+  # VM used to run the users_api
+  config.vm.define "users_api" do |users_api|
+    users_api.vm.box = "centos/8"
+    users_api.vm.network "forwarded_port", guest: 8083, host: 8083, host_ip: "127.0.0.1"
+    users_api.vm.network :private_network, ip: "10.0.0.10"
+    users_api.vm.provision :shell, path: "scripts/provision-users_api.sh"
+  end
+
+  # VM used to run the auth_api
+  config.vm.define "auth_api" do |auth_api|
+    auth_api.vm.box = "centos/8"
+    auth_api.vm.network "forwarded_port", guest: 8000, host: 8000, host_ip: "127.0.0.1"
+    auth_api.vm.network :private_network, ip: "10.0.0.20"
+    auth_api.vm.provision :shell, path: "scripts/provision-auth_api.sh"
+  end
+
+  # VM used to run the log_message
+  config.vm.define "log_message" do |log_message|
+    log_message.vm.box = "centos/8"
+    log_message.vm.network "forwarded_port", guest: 6379, host: 6379, host_ip: "127.0.0.1"
+    log_message.vm.network :private_network, ip: "10.0.0.30"
+    log_message.vm.provision :shell, path: "scripts/provision-log_message.sh"
+  end
+
+  # VM used to run the todos_api
+  config.vm.define "todos_api" do |todos_api|
+    todos_api.vm.box = "centos/8"
+    todos_api.vm.network "forwarded_port", guest: 8082, host: 8082, host_ip: "127.0.0.1"
+    todos_api.vm.network :private_network, ip: "10.0.0.40"
+    todos_api.vm.provision :shell, path: "scripts/provision-todos_api.sh"
+  end
+
+  # VM used to run the frontend
+  config.vm.define "frontend" do |frontend|
+    frontend.vm.box = "centos/8"
+    frontend.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
+    frontend.vm.network :private_network, ip: "10.0.0.50"
+    frontend.vm.provision :shell, path: "scripts/provision-frontend.sh"
+  end
+ 
+end

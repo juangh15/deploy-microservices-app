@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# PORTS ----------------
+# auth api = 8000
+# frontend = 8080
+# log message = 6379
+# todos api = 8082
+# users api = 8083
+
+# Every VM use CentOS 8
+
+Vagrant.configure("2") do |config|
+  
+  # General provisioning 
+  config.vm.provision :shell, path: "scripts/provision-general.sh"
+
+  # VM used to run the backend
+  config.vm.define "backend" do |backend|
+    backend.vm.box = "centos/8"
+    backend.vm.network "forwarded_port", guest: 8083, host: 8083, host_ip: "127.0.0.1"
+    backend.vm.network "forwarded_port", guest: 8000, host: 8000, host_ip: "127.0.0.1"
+    backend.vm.network "forwarded_port", guest: 6379, host: 6379, host_ip: "127.0.0.1"
+    backend.vm.network "forwarded_port", guest: 8082, host: 8082, host_ip: "127.0.0.1"
+    backend.vm.network :private_network, ip: "10.0.0.10"
+    backend.vm.provision :shell, path: "scripts/provision-backend.sh"
+  end
+
+  # VM used to run the frontend
+  config.vm.define "frontend" do |frontend|
+    frontend.vm.box = "centos/8"
+    frontend.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
+    frontend.vm.network :private_network, ip: "10.0.0.20"
+    frontend.vm.provision :shell, path: "scripts/provision-frontend.sh"
+  end
+ 
+end
