@@ -1,5 +1,5 @@
 data "template_file" "client" {
-  template = "${file("../infra/provision-frontend.sh")}"
+  template = file(var.ec2_template_user_data)
 }
 data "template_cloudinit_config" "config" {
   gzip          = false
@@ -9,7 +9,7 @@ data "template_cloudinit_config" "config" {
     content_type = "text/x-shellscript"
     content      = <<-EOF
     #!/bin/bash
-    echo 'BACKEND_IP="${aws_lb.JuanSE_LB_Backend.dns_name}"' > /opt/server_ip 
+    echo 'BACKEND_IP="${var.user_data_backend_ip}"' > /opt/server_ip 
     EOF
   }
   #second part

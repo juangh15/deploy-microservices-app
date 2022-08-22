@@ -1,4 +1,9 @@
-# output "public_ip" {
-#   description = "public ip address"
-#   value       = module.deploy_ec2_and_rds.public_ip_address
-# }
+output "frontend_load_balancer_dns_name" {
+  description = "DNS name for accesing"
+  value       = module.deploy_frontend.load_balancer_dns_name
+}
+
+output "backend_load_balancer_dns_name" {
+  description = "DNS name for accesing"
+  value       = module.deploy_backend.load_balancer_dns_name
+}
