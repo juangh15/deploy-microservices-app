@@ -1,0 +1,14 @@
+[Unit]
+Description=ToDos API Service
+After=network.target
+
+[Service]
+User={{user}}
+EnvironmentFile=/etc/sysconfig/todos_api
+WorkingDirectory={{todos_api_dir}}
+ExecStart={{node_for_systemd}}/bin/node {{todos_api_dir}}/server.js
+Restart=on-failure
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

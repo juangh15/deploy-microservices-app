@@ -1,0 +1,13 @@
+[Unit]
+Description=Auth API
+After=network.target
+
+[Service]
+User={{user}}
+EnvironmentFile=/etc/sysconfig/auth_api
+ExecStart={{auth_binary_dir}}/auth-api
+Restart=always
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

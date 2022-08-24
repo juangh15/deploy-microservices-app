@@ -1,0 +1,12 @@
+---
+- block:
+  - name: service | Remove previous .service files
+    command: rm -rf /etc/systemd/system/{{service_name}}.service
+  - name: service | Create environment file
+    template: src={{service_name}}.env.j2 dest=/etc/sysconfig/{{service_name}}
+  - name: service | Create Unit file
+    template: src={{service_name}}.service.j2 dest=/etc/systemd/system/{{service_name}}.service mode=644
+  - name: service | daemon-reload
+    command: systemctl daemon-reload
+  - name: service | Start service
+    service: name={{service_name}}.service state=started enabled=yes

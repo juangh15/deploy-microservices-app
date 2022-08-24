@@ -1,0 +1,74 @@
+---
+- hosts: localhost
+  become: true
+  roles:
+    - role: geerlingguy.java
+      when: "ansible_os_family == 'RedHat'"
+      java_packages:
+              - java-1.8.0-openjdk-devel
+      
+    - role: gantsign.golang
+      golang_gopath: '/usr/local/go'
+      golang_version: '1.18.2'
+    
+    - role: davidwittman.redis
+      redis_version: 5.0.7          
+      redis_port: 6379             
+      redis_bind: 127.0.0.1
+
+  tasks:
+    - include_vars: vars/backend_vars.yml
+    - block: 
+      - name: Create user
+        include_tasks: tasks/new-user.yml
+
+    - block: 
+      - name: Clone the Microservices Repository
+        git:
+          repo: "{{ git_repo_url }}"
+          dest: "{{ repo_path }}"
+          clone: yes
+          update: yes
+          force: yes
+      become_flags: -i
+      become_user: "{{ user }}"
+
+    - block: 
+      - name: Build Users_API
+        command: ./mvnw clean install
+        args:
+          chdir: "{{ users_api_dir }}"
+      become_flags: -i
+      become_user: "{{ user }}"
+
+    - block: 
+      - name: Build Auth API
+        include_tasks: tasks/build-go-api.yml
+
+    - block: 
+      - name: Install Log Message Processor
+        dnf: 
+          name: python36-devel
+          state: present
+      - name: Install Requirements
+        command: pip3 install -r requirements.txt
+        args: 
+          chdir: "{{ log_message_dir }}"
+
+    - block: 
+      - name: Install NVM and NODE
+        include_tasks: tasks/install-node.yml
+
+      - name: Install packages for Todos_API
+        npm:
+          path: "{{ todos_api_dir }}"
+          state: present
+      become_flags: -i
+      become_user: "{{ user }}"
+
+    - block:
+      - name: Copy node to an executable environment
+        command: cp -r -f /home/{{ user }}/.nvm/versions/node /usr/bin
+      
+      - include: tasks/service-creator.yml service_name="{{item}}"
+        loop: "{{ service_names }}"

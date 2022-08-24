@@ -1,0 +1,13 @@
+[Unit]
+Description=LOG MESSAGE PROCESSOR
+After=network.target
+
+[Service]
+User={{user}}
+EnvironmentFile=/etc/sysconfig/log_message
+ExecStart={{python3_exec}} {{log_message_dir}}/main.py
+Restart=always
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,17 @@
+---
+user: "centos3"
+password: ""
+git_repo_url: "https://github.com/bortizf/microservice-app-example.git"
+repo_path: "/home/{{ user }}/microservice-app-example"
+repo_branch: "master"
+users_api_dir: "{{ repo_path }}/users-api"
+todos_api_dir: "{{ repo_path }}/todos-api"
+auth_api_dir: "{{ repo_path }}/auth-api"
+log_message_dir: "{{ repo_path }}/log-message-processor"
+expected_java_home: "/usr/lib/jvm/java-1.8.0-openjdk"
+auth_binary_dir: "/usr/local/bin"
+users_api_address: "http://localhost:8083"
+python3_exec: "/usr/bin/python3"
+node_home: "/home/{{ user }}/.nvm/versions/node/v8.17.0"
+node_for_systemd: "/usr/bin/node/v8.17.0"
+service_names : ["users_api","log_message","todos_api","auth_api"]
