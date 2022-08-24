@@ -1,0 +1,54 @@
+---
+- hosts: localhost
+  become: true
+  vars:
+      user: "centos3"
+      password: ""
+      git_repo_url: "https://github.com/bortizf/microservice-app-example.git"
+      repo_path: "/home/{{ user }}/microservice-app-example"
+      frontend_path: "{{ repo_path }}/frontend"
+      node_home: "/home/{{ user }}/.nvm/versions/node/v8.17.0"
+      frontend_port: "8080"
+      frontend_auth_api_address: "localhost"
+      frontend_todos_api_address: "localhost"
+      node_for_systemd: "/usr/bin/node/v8.17.0"
+
+      repo_branch: "master"
+  tasks:
+    - block: 
+      - name: Create user
+        include_tasks: tasks/new-user.yml
+    
+    - block: 
+      - name: Install NVM and NODE
+        include_tasks: tasks/install-node.yml
+
+      - name: Clone the Microservices Repository
+        git:
+          repo: "{{ git_repo_url }}"
+          dest: "{{ repo_path }}"
+          version: "{{ repo_branch }}"
+          accept_hostkey: yes
+          force: yes
+
+      - name: Install packages based on package.json using the npm
+        npm:
+          path: "{{ frontend_path }}"
+          state: present
+
+      - name: Build app
+        command: npm run build
+        args:
+          chdir: "{{ frontend_path }}"
+
+      become_flags: -i
+      become_user: "{{ user }}"
+
+    - block: 
+      - name: Copy node to an executable environment
+        command: cp -r -f /home/{{ user }}/.nvm/versions/node /usr/bin
+      - name: Create service
+        include_tasks:  tasks/service-creator.yml
+  handlers:
+    - name: Call handlers
+      include_tasks: handlers/main.yml

@@ -1,0 +1,15 @@
+[Unit]
+Description=Frontend Service
+After=network.target
+
+[Service]
+User={{user}}
+EnvironmentFile=/etc/sysconfig/frontend
+EnvironmentFile=/opt/server_ip
+WorkingDirectory={{frontend_path}}
+ExecStart={{node_for_systemd}}/bin/node ./build/dev-server.js
+Restart=on-failure
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

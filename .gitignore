@@ -53,3 +53,6 @@ terraform.rc
 ## Desktop ini ##
 *desktop.ini
 *desktop.ini*
+
+# Local .vscode directories
+**/.vscode/*

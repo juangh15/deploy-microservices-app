@@ -9,7 +9,9 @@ data "template_cloudinit_config" "config" {
     content_type = "text/x-shellscript"
     content      = <<-EOF
     #!/bin/bash
-    echo 'BACKEND_IP="${var.user_data_backend_ip}"' > /opt/server_ip 
+    echo 'AUTH_API_ADDRESS="${var.user_data_backend_ip}"' >> /opt/server_ip
+    echo 'TODOS_API_ADDRESS="${var.user_data_backend_ip}"' >> /opt/server_ip
+    echo 'BACKEND_IP="${var.user_data_backend_ip}"' >> /opt/server_ip  
     EOF
   }
   #second part
