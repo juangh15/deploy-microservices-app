@@ -21,7 +21,7 @@ cd ./deploy-microservices-app/ansible/backend_config
 # Install Roles
 ansible-galaxy install geerlingguy.java -p roles/
 ansible-galaxy install gantsign.golang -p roles/
-ansible-galaxy install davidwittman.redis -p roles
+ansible-galaxy install davidwittman.redis -p roles/
 
 # Run ansible playbook 
 ansible-playbook ./main.yml 
