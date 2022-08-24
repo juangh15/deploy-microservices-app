@@ -20,7 +20,7 @@ module "deploy_frontend" {
   ec2_template_volume_size   = 10
   ec2_template_volume_type   = "gp2"
   ec2_template_key_pair_name = "JuanSE-RampUP"
-  ec2_template_user_data     = "../deploy/provision-frontend.sh"
+  ec2_template_user_data     = "../deploy/ansible-provision-frontend.sh"
   user_data_backend_ip       = module.deploy_backend.load_balancer_dns_name
 
   load_balancer_name                  = "frontend-load-balancer"
@@ -62,7 +62,7 @@ module "deploy_backend" {
   ec2_template_volume_size   = 10
   ec2_template_volume_type   = "gp2"
   ec2_template_key_pair_name = "JuanSE-RampUP"
-  ec2_template_user_data     = "../deploy/provision-backend.sh"
+  ec2_template_user_data     = "../deploy/ansible-provision-backend.sh"
 
   load_balancer_name                  = "backend-load-balancer"
   is_load_balancer_internal           = true
