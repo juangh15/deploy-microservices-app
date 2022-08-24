@@ -28,7 +28,7 @@ cd ./deploy-microservices-app/ansible/frontend_config
 # chmod 400 keys/*
 # 
 # Run ansible playbook 
-ansible-playbook ./main.yml 
+/usr/local/bin/ansible-playbook ./main.yml 
 # 
 # # Tag the instance: provisioned
 # aws ec2 create-tags --region $EC2_REGION --resources $InstanceID --tags Key=Provisioned,Value=true
