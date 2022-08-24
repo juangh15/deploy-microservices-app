@@ -1,0 +1,13 @@
+[Unit]
+Description=Users API
+After=network.target
+
+[Service]
+User={{user}}
+EnvironmentFile=/etc/sysconfig/users_api
+ExecStart={{expected_java_home}}/bin/java -jar {{users_api_dir}}/target/users-api-0.0.1-SNAPSHOT.jar
+Restart=always
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

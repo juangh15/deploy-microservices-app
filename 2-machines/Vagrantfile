@@ -14,6 +14,7 @@ Vagrant.configure("2") do |config|
   
   # General provisioning 
   config.vm.provision :shell, path: "scripts/provision-general.sh"
+  config.vbguest.installer_options = { allow_kernel_upgrade: true }
 
   # VM used to run the backend
   config.vm.define "backend" do |backend|
@@ -23,7 +24,8 @@ Vagrant.configure("2") do |config|
     backend.vm.network "forwarded_port", guest: 6379, host: 6379, host_ip: "127.0.0.1"
     backend.vm.network "forwarded_port", guest: 8082, host: 8082, host_ip: "127.0.0.1"
     backend.vm.network :private_network, ip: "10.0.0.10"
-    backend.vm.provision :shell, path: "scripts/provision-backend.sh"
+    backend.vm.provision :shell, path: "scripts/ansible-provision-backend.sh"
+    backend.vm.synced_folder "backend_sync/", "/sync"
   end
 
   # VM used to run the frontend
@@ -31,7 +33,8 @@ Vagrant.configure("2") do |config|
     frontend.vm.box = "centos/8"
     frontend.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
     frontend.vm.network :private_network, ip: "10.0.0.20"
-    frontend.vm.provision :shell, path: "scripts/provision-frontend.sh"
+    frontend.vm.provision :shell, path: "scripts/ansible-provision-frontend.sh"
+    frontend.vm.synced_folder "frontend_sync/", "/sync"
   end
  
 end

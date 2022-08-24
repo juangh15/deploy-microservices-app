@@ -1,0 +1,9 @@
+---
+- name: frontend | Create environment file
+  template: src=frontend.env.j2 dest=/etc/sysconfig/frontend
+- name: frontend | Create Unit file
+  template: src=frontend.service.j2 dest=/etc/systemd/system/frontend.service mode=644
+- name: frontend | daemon-reload
+  command: systemctl daemon-reload
+- name: frontend | Start frontend
+  service: name=frontend.service state=started enabled=yes

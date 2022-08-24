@@ -1,0 +1,24 @@
+---
+- block: 
+  - name: GOMODULE On
+    shell: |
+      source /etc/profile.d/golang.sh && GO111MODULE=on
+    args: 
+      chdir: "{{ auth_api_dir }}"
+  - name: Init Auth_API
+    shell: |
+      source /etc/profile.d/golang.sh && go mod init github.com/bortizf/microservice-app-example/tree/master/auth-api || true
+    args: 
+      chdir: "{{ auth_api_dir }}"
+  - name: Tidy Auth_API
+    shell: source /etc/profile.d/golang.sh && go mod tidy
+    args: 
+      chdir: "{{ auth_api_dir }}"
+  - name: Build Auth_API
+    shell: source /etc/profile.d/golang.sh && go build
+    args: 
+      chdir: "{{ auth_api_dir }}"
+  - name: Move Auth_API to executable environment
+    shell: cp -r -f ./auth-api {{ auth_binary_dir }}
+    args: 
+      chdir: "{{ auth_api_dir }}"
