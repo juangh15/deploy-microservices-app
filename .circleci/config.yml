@@ -10,6 +10,7 @@ jobs:
           name: terraform init & plan
           command: |
             cd iac/deploy
+            terraform get --update
             terraform init -input=false
             terraform plan -out tfapply
       - persist_to_workspace:
