@@ -1,5 +1,5 @@
 module "frontend_security_rules" {
-  source = "../Security_Rules"
+  source = "../security_rules"
 
   security_ingress_ports = {
 
@@ -48,7 +48,7 @@ module "frontend_security_rules" {
 }
 
 module "backend_security_rules" {
-  source = "../Security_Rules"
+  source = "../security_rules"
   security_ingress_ports = {
 
     # ALL BACKEND LOAD BALANCER RULES:
