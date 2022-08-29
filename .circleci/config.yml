@@ -16,7 +16,7 @@ jobs:
           root: .
           paths:
             - .
-
+# 
   apply:
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
