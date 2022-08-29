@@ -12,7 +12,7 @@ jobs:
             cd iac/deploy
             terraform get --update
             terraform init -input=false
-            terraform plan -out tfapply
+            terraform plan -out tfapply -var='region="us-east-1"'
       - persist_to_workspace:
           root: .
           paths:
