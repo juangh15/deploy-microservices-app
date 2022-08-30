@@ -27,6 +27,7 @@ jobs:
       - run:
           name: terraform
           command: |
+            cd iac/deploy
             terraform apply -auto-approve replace_autoscaling
       - persist_to_workspace:
           root: .
