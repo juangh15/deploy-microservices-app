@@ -39,30 +39,34 @@ jobs:
             - .
   
   plan-destroy:
+    working_directory: /tmp/iac
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
       - attach_workspace:
-          at: .
+          at: /tmp/iac
       - run:
           name: terraform create destroy plan
           command: |
-            terraform plan -destroy -out tfdestroy
+            cd /tmp/iac/deploy
+            terraform plan -destroy -out="tfdestroy.tfplan"
       - persist_to_workspace:
-          root: .
+          root: /tmp/iac
           paths:
             - .
 
   destroy:
+    working_directory: /tmp/iac
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
       - attach_workspace:
-          at: .
+          at: /tmp/iac
       - run:
           name: terraform destroy
           command: |
-            terraform apply -auto-approve tfdestroy
+            cd /tmp/iac/deploy
+            terraform apply -auto-approve tfdestroy.tfplan
 
 workflows:
   version: 2
