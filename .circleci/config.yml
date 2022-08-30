@@ -15,7 +15,7 @@ jobs:
 # terraform init -input=false
 # terraform plan -out="replace_autoscaling.tfplan" -replace="module.deploy_backend.aws_autoscaling_group.ec2_autoscaling" -replace="module.deploy_frontend.aws_autoscaling_group.ec2_autoscaling"
       - persist_to_workspace:
-          root: /tmp/project/iac/deploy
+          root: /tmp/project/iac
           paths:
             - .
 # 
@@ -30,6 +30,7 @@ jobs:
           name: terraform
           command: |
             ls -la
+            cd ./deploy $$ ls -la
 #            cd iac/deploy
 #            terraform apply -auto-approve replace_autoscaling
       - persist_to_workspace:
