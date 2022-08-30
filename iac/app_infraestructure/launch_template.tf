@@ -15,6 +15,10 @@ resource "aws_launch_template" "ec2_template" {
     }
   }
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   tag_specifications {
     resource_type = "instance"
     tags          = var.general_tags

@@ -10,4 +10,14 @@ resource "aws_autoscaling_group" "ec2_autoscaling" {
     version = "$Latest"
   }
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  health_check_grace_period = var.ec2_autoscaling_health_check_grace_period
+  #health_check_type         = var.ec2_autoscaling_health_check_type
+
+  wait_for_capacity_timeout = var.ec2_autoscaling_wait_for_capacity_timeout
+  #wait_for_elb_capacity     = var.ec2_autoscaling_wait_for_elb_capacity
+
 }

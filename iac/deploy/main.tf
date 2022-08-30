@@ -30,11 +30,12 @@ module "deploy_frontend" {
   load_balancer_subnet_ids            = ["subnet-0ed083b4f1714e9a7", "subnet-030ee31454511f6ec"]
   is_load_balancer_deletion_protected = false
 
-  ec2_autoscaling_min_size          = 1
-  ec2_autoscaling_max_size          = 2
-  ec2_autoscaling_desired_size      = 1
-  ec2_autoscaling_vpc_identifier    = ["subnet-0ed083b4f1714e9a7"]
-  ec2_autoscaling_target_group_arns = ["NONE"]
+  ec2_autoscaling_min_size              = 1
+  ec2_autoscaling_max_size              = 2
+  ec2_autoscaling_desired_size          = 1
+  ec2_autoscaling_vpc_identifier        = ["subnet-0ed083b4f1714e9a7"]
+  ec2_autoscaling_target_group_arns     = ["NONE"]
+  ec2_autoscaling_wait_for_elb_capacity = 1
 
 }
 

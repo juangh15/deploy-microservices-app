@@ -138,7 +138,6 @@ variable "is_load_balancer_deletion_protected" {
 }
 
 
-
 variable "ec2_autoscaling_min_size" {
   type        = number
   description = "Minimum amount of instances running"
@@ -166,3 +165,27 @@ variable "ec2_autoscaling_target_group_arns" {
   type        = set(string)
   description = "ARNs of the target groups for the instances in the autoscaling group"
 }
+
+variable "ec2_autoscaling_health_check_grace_period" {
+  type        = number
+  description = "Time to wait before sending health requests to launched instances"
+  default     = 600
+}
+
+variable "ec2_autoscaling_health_check_type" {
+  type        = string
+  description = "Type of the health checks to instances"
+  default     = "ELB"
+}
+
+variable "ec2_autoscaling_wait_for_capacity_timeout" {
+  type        = string
+  description = "Time to wait before destroying the previous instances"
+  default     = "6m"
+}
+
+variable "ec2_autoscaling_wait_for_elb_capacity" {
+  type        = number
+  description = "Number of launched instances running before destroying the previous instances"
+  default     = 1
+} 
