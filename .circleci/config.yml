@@ -10,31 +10,31 @@ jobs:
           name: terraform init & plan
           command: |
             cd iac/deploy
-            touch try1.txt
-# terraform get --update
-# terraform init -input=false
-# terraform plan -out="replace_autoscaling.tfplan" -replace="module.deploy_backend.aws_autoscaling_group.ec2_autoscaling" -replace="module.deploy_frontend.aws_autoscaling_group.ec2_autoscaling"
+            terraform get --update
+            terraform init -input=false
+            terraform plan -out="replace_autoscaling.tfplan" -replace="module.deploy_backend.aws_autoscaling_group.ec2_autoscaling" -replace="module.deploy_frontend.aws_autoscaling_group.ec2_autoscaling"
       - persist_to_workspace:
           root: /tmp/project/iac
           paths:
             - .
 # 
   apply:
-    working_directory: /tmp
+    working_directory: /tmp/iac
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
       - attach_workspace:
-          at: /tmp
+          at: /tmp/iac
+      - run:
+          name: show
+          command: cd /tmp/iac/deploy && ls -la
       - run:
           name: terraform
           command: |
-            ls -la
-            cd ./deploy $$ ls -la
-#            cd iac/deploy
-#            terraform apply -auto-approve replace_autoscaling
+            cd /tmp/iac/deploy
+            terraform apply -auto-approve replace_autoscaling.tfplan
       - persist_to_workspace:
-          root: .
+          root: /tmp/iac
           paths:
             - .
   
