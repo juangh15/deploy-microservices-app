@@ -137,13 +137,6 @@ variable "is_load_balancer_deletion_protected" {
   default     = false
 }
 
-variable "load_balancer_health_check_target" {
-  type = string
-  description = "PROTOCOL:PORT/ <- Path for sending health check requests"
-  default = "HTTP:8080/"
-}
-
-
 
 variable "ec2_autoscaling_min_size" {
   type        = number
@@ -174,25 +167,25 @@ variable "ec2_autoscaling_target_group_arns" {
 }
 
 variable "ec2_autoscaling_health_check_grace_period" {
-  type = number
+  type        = number
   description = "Time to wait before sending health requests to launched instances"
-  default = 300
+  default     = 600
 }
 
 variable "ec2_autoscaling_health_check_type" {
-  type = string
+  type        = string
   description = "Type of the health checks to instances"
-  default = "ELB"
+  default     = "ELB"
 }
 
 variable "ec2_autoscaling_wait_for_capacity_timeout" {
-  type = string
+  type        = string
   description = "Time to wait before destroying the previous instances"
-  default = "10m"
+  default     = "6m"
 }
 
 variable "ec2_autoscaling_wait_for_elb_capacity" {
-  type = number
+  type        = number
   description = "Number of launched instances running before destroying the previous instances"
-  default = 1
+  default     = 1
 } 

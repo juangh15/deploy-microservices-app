@@ -6,14 +6,6 @@ resource "aws_lb" "load_balancer" {
   subnets                    = var.load_balancer_subnet_ids
   enable_deletion_protection = var.is_load_balancer_deletion_protected
   tags                       = var.general_tags
-
-  health_check {
-    healthy_threshold   = 5
-    unhealthy_threshold = 2
-    timeout             = 5
-    target              = var.load_balancer_health_check_target
-    interval            = 30
-  }
 }
 
 resource "aws_lb_listener" "load_balancer_listener" {
