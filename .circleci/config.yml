@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: terraform init & plan
+          name: Terraform Init and Create Plan
           command: |
             cd iac/deploy
             terraform get --update
@@ -17,7 +17,7 @@ jobs:
           root: /tmp/project/iac
           paths:
             - .
-# 
+
   apply:
     working_directory: /tmp/iac
     docker:
@@ -26,48 +26,10 @@ jobs:
       - attach_workspace:
           at: /tmp/iac
       - run:
-          name: show
-          command: cd /tmp/iac/deploy && ls -la
-      - run:
-          name: terraform
+          name: Apply Terraform Plan
           command: |
             cd /tmp/iac/deploy
             terraform apply -auto-approve replace_autoscaling.tfplan
-      - persist_to_workspace:
-          root: /tmp/iac
-          paths:
-            - .
-  
-  plan-destroy:
-    working_directory: /tmp/iac
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - attach_workspace:
-          at: /tmp/iac
-      - run:
-          name: terraform create destroy plan
-          command: |
-            cd /tmp/iac/deploy
-            terraform plan -destroy -out="tfdestroy.tfplan"
-      - persist_to_workspace:
-          root: /tmp/iac
-          paths:
-            - .
-
-  destroy:
-    working_directory: /tmp/iac
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - attach_workspace:
-          at: /tmp/iac
-      - run:
-          name: terraform destroy
-          command: |
-            cd /tmp/iac/deploy
-            terraform apply -auto-approve tfdestroy.tfplan
-
 workflows:
   version: 2
   plan_approve_apply:
