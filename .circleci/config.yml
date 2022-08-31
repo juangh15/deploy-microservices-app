@@ -11,11 +11,7 @@ jobs:
           command: |
             cd iac/deploy
             terraform init -input=false
-            terraform plan -out="replace_autoscaling.tfplan" \ 
-              -replace="module.deploy_backend.aws_autoscaling_group.ec2_autoscaling" \
-              -replace="module.deploy_frontend.aws_autoscaling_group.ec2_autoscaling" \
-              -replace="module.deploy_frontend.aws_launch_template.ec2_template" \
-              -replace="module.deploy_backend.aws_launch_template.ec2_template" 
+            terraform plan -out="replace_autoscaling.tfplan" -replace="module.deploy_backend.aws_autoscaling_group.ec2_autoscaling" -replace="module.deploy_frontend.aws_autoscaling_group.ec2_autoscaling" -replace="module.deploy_frontend.aws_launch_template.ec2_template" -replace="module.deploy_backend.aws_launch_template.ec2_template"
       - persist_to_workspace:
           root: /tmp/project/iac
           paths:
