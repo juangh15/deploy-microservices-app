@@ -169,7 +169,7 @@ variable "ec2_autoscaling_target_group_arns" {
 variable "ec2_autoscaling_health_check_grace_period" {
   type        = number
   description = "Time to wait before sending health requests to launched instances"
-  default     = 600
+  default     = 240
 }
 
 variable "ec2_autoscaling_health_check_type" {
