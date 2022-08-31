@@ -181,7 +181,7 @@ variable "ec2_autoscaling_health_check_type" {
 variable "ec2_autoscaling_wait_for_capacity_timeout" {
   type        = string
   description = "Time to wait before destroying the previous instances"
-  default     = "6m"
+  default     = "1s"
 }
 
 variable "ec2_autoscaling_wait_for_elb_capacity" {
