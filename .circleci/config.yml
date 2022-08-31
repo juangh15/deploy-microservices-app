@@ -10,7 +10,6 @@ jobs:
           name: Terraform Init and Create Plan
           command: |
             cd iac/deploy
-            terraform get --update
             terraform init -input=false
             terraform plan -out="replace_autoscaling.tfplan" -replace="module.deploy_backend.aws_autoscaling_group.ec2_autoscaling" -replace="module.deploy_frontend.aws_autoscaling_group.ec2_autoscaling"
       - persist_to_workspace:
